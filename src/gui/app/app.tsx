@@ -1,5 +1,6 @@
 import React from 'react'
 import { Stage, Layer, Circle, Rect, Text, Group, Line, Wedge } from 'react-konva'
+import Widget from '../widget'
 import './app.css'
 
 class App extends React.Component {
@@ -10,7 +11,7 @@ class App extends React.Component {
     twa: 21,
     awa: 23,
     cog: 19,
-    btw: -31
+    btw: null
   }
 
   /*
@@ -84,31 +85,19 @@ class App extends React.Component {
   }
 
   renderCircles (innerWidth:number, innerHeight:number) {
-    const outerOuterRadius = (innerHeight / 2) - 10
-    const outerInnerRadius = outerOuterRadius - 20
-    const innerOuterRadius = outerInnerRadius - 5
-    const innerInnerRadius = innerOuterRadius - 20
-
-    const ShapeLayer = (props:any) => {
-      const Shape = props.shape
-      return (
-        <Layer>
-          <props.shape {...props} />
-        </Layer>
-      )
+    if (this.state.heading === null) {
+      return null
     }
 
-    const innerRect = <Rect
-      x={(innerWidth / 2) - innerInnerRadius}
-      y={55}
-      width={innerInnerRadius * 2}
-      height={innerInnerRadius * 2}
-      fill='red'
-    />
+    const heading:number = this.state.heading
+    const outerOuterRadius:number = (innerHeight / 2) - 10
+    const outerInnerRadius:number = outerOuterRadius - 20
+    const innerOuterRadius:number = outerInnerRadius - 5
+    const innerInnerRadius:number = innerOuterRadius - 20
 
     const rects = []
     const texts = []
-    let count = 1
+    let count:number = 1
 
     for (let i = 0; i <= 360; i += 10) {
       if (count === 3) {
@@ -155,7 +144,7 @@ class App extends React.Component {
 
     return (
       <Group
-        rotation={-this.state.heading}
+        rotation={-heading}
         offsetX={innerWidth / 2}
         offsetY={innerHeight / 2}
         x={innerWidth / 2}
@@ -192,9 +181,15 @@ class App extends React.Component {
   }
 
   renderTWA (innerWidth:number, innerHeight:number) {
+    if (this.state.twa === null) {
+      return null
+    }
+    
+    const twa = this.state.twa || 0
+
     return (
       <Group
-        rotation={(this.state.heading + this.state.twa)}
+        rotation={(this.state.heading + twa)}
         offsetX={innerWidth / 2}
         offsetY={innerHeight / 2}
         x={innerWidth / 2}
@@ -225,9 +220,15 @@ class App extends React.Component {
   }
 
   renderAWA (innerWidth:number, innerHeight:number) {
+    if (this.state.awa === null) {
+      return null
+    }
+
+    const awa = this.state.awa || 0
+
     return (
       <Group
-        rotation={(this.state.heading + this.state.awa)}
+        rotation={(this.state.heading + awa)}
         offsetX={innerWidth / 2}
         offsetY={innerHeight / 2}
         x={innerWidth / 2}
@@ -257,9 +258,15 @@ class App extends React.Component {
   }
 
   renderCOG (innerWidth:number, innerHeight:number) {
+    if (this.state.cog === null) {
+      return null
+    }
+    
+    const cog = this.state.cog || 0
+    
     return (
       <Group
-        rotation={-this.state.cog}
+        rotation={-cog}
         offsetX={innerWidth / 2}
         offsetY={innerHeight / 2}
         x={innerWidth / 2}
@@ -280,9 +287,15 @@ class App extends React.Component {
   }
 
   renderBTW (innerWidth:number, innerHeight:number) {
+    if (this.state.btw === null) {
+      return null
+    }
+    
+    const btw = this.state.btw || 0
+
     return (
       <Group
-        rotation={-this.state.btw}
+        rotation={-btw}
         offsetX={innerWidth / 2}
         offsetY={innerHeight / 2}
         x={innerWidth / 2}
@@ -306,17 +319,38 @@ class App extends React.Component {
       innerWidth
     } = window
 
+    const {
+      cog,
+      awa,
+      twa,
+      btw
+    } = this.state
+
     return (
-      <Stage width={innerWidth} height={innerHeight}>
-        <Layer>
-          {this.renderCircles(innerWidth, innerHeight)}
-          {this.renderCenter()}
-          {this.renderTWA(innerWidth, innerHeight)}
-          {this.renderAWA(innerWidth, innerHeight)}
-          {this.renderCOG(innerWidth, innerHeight)}
-          {this.renderBTW(innerWidth, innerHeight)}
-        </Layer>
-      </Stage>
+      <section className='application'>
+        <Stage width={innerWidth} height={innerHeight}>
+          <Layer>
+            {this.renderCircles(innerWidth, innerHeight)}
+            {this.renderCenter()}
+            {twa !== null && this.renderTWA(innerWidth, innerHeight)}
+            {awa !== null && this.renderAWA(innerWidth, innerHeight)}
+            {cog !== null && this.renderCOG(innerWidth, innerHeight)}
+            {btw !== null && this.renderBTW(innerWidth, innerHeight)}
+          </Layer>
+        </Stage>
+        <div className='widgets-left'>
+          <Widget position='left' />
+          <Widget position='left' />
+          <Widget position='left' />
+          <Widget position='left' />
+        </div>
+        <div className='widgets-right'>
+          <Widget position='right' />
+          <Widget position='right' />
+          <Widget position='right' />
+          <Widget position='right' />
+        </div>
+      </section>
     )
   }
 

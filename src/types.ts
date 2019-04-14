@@ -5,3 +5,7 @@ export interface IApplicationState {
 export interface IUIDuckState {
   connected: boolean
 }
+
+export interface IWidgetPropTypes {
+  position: string
+}
