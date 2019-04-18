@@ -2,60 +2,74 @@ import React from 'react'
 import { Stage, Layer, Circle, Rect, Text, Group, Line, Wedge } from 'react-konva'
 import Widget from '../widget'
 import './app.css'
+import { IAppPropType } from '../../types'
 
-class App extends React.Component {
+class App extends React.Component<IAppPropType> {
   private interval:any
 
-  public state = {
-    heading: 31,
-    twa: 21,
-    awa: 23,
-    cog: 19,
-    btw: null
-  }
-
-  /*
-  componentDidMount () {
-    this.interval = setInterval(() => {
-      const {
-        heading,
-        twa,
-        awa
-      } = this.state
-
-      this.setState({
-        heading: heading === 359 ? 0 : heading + 1,
-        twa: twa === 0 ? 359 : twa - 1,
-        awa: awa === 0 ? 359 : awa - 1
-      })
-    }, 500)
-  }
-  // */
-
-  componentWillUnmount () {
-    if (this.interval) {
-      clearInterval(this.interval)
+  renderTack (side:string, awa:number, heading:number, colour:string = 'green') {
+    if (isNaN(awa as number) || isNaN(heading as number)) {
+      return null
     }
+
+    let tack = awa
+
+    if (awa < -90 || awa > 90) {
+      return null
+    }
+
+    if (side === 'port') {
+      tack = awa - 45
+    }
+
+    if (side === 'starboard') {
+      tack = awa + 45
+    }
+
+    return (
+      <Group
+        rotation={tack}
+        offsetX={innerWidth / 2}
+        offsetY={innerHeight / 2}
+        x={innerWidth / 2}
+        y={innerHeight / 2}
+      >
+        <Line
+          x={innerWidth / 2}
+          y={55}
+          stroke={colour}
+          strokeWidth={8}
+          points={[
+            0, 0,
+            0, (innerHeight / 2) - 55
+          ]}
+        />
+      </Group>
+    )
   }
 
-  renderCenter () {
+  renderCenter (speedValue:number) {
+    let val:string = '--'
+    if (!isNaN(speedValue)) {
+      val = this.msToKnots(speedValue).toFixed(1)
+    }
     return (
       <Group>
         <Line
           x={innerWidth / 2}
           y={55}
-          stroke='white'
+          stroke='#ffffff80'
           strokeWidth={1}
           dash={[1, 5]}
           points={[
             0, 0,
-            0, innerHeight - 110
+            0, (innerHeight / 2) - 55
           ]}
         />
         <Line
           x={innerWidth / 2}
           y={innerHeight / 2}
-          stroke='white'
+          stroke='#ffffff80'
           strokeWidth={1}
           dash={[1, 5]}
           points={[
@@ -80,16 +94,38 @@ class App extends React.Component {
             0, 0
           ]}
         />
+        <Rect
+          width={90}
+          height={35}
+          x={(innerWidth / 2) - 45}
+          y={(innerHeight / 2) + 30}
+          stroke='orange'
+          strokeWidth={1}
+          dash={[1, 2]}
+          cornerRadius={5}
+        />
+        <Text
+          width={90}
+          height={35}
+          x={(innerWidth / 2) - 45}
+          y={(innerHeight / 2) + 30}
+          lineHeight={2}
+          text={`${val} kts`}
+          align='center'
+          fill='white'
+          fontStyle='bold'
+          fontFamily='-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif'
+          fontSize={18}
+        />
       </Group>
     )
   }
 
-  renderCircles (innerWidth:number, innerHeight:number) {
-    if (this.state.heading === null) {
+  renderCircles (innerWidth:number, innerHeight:number, heading?:number) {
+    if (heading === null || isNaN(heading as number)) {
       return null
     }
 
-    const heading:number = this.state.heading
     const outerOuterRadius:number = (innerHeight / 2) - 10
     const outerInnerRadius:number = outerOuterRadius - 20
     const innerOuterRadius:number = outerInnerRadius - 5
@@ -144,7 +180,7 @@ class App extends React.Component {
 
     return (
       <Group
-        rotation={-heading}
+        rotation={-(heading as number)}
         offsetX={innerWidth / 2}
         offsetY={innerHeight / 2}
         x={innerWidth / 2}
@@ -180,16 +216,19 @@ class App extends React.Component {
     )
   }
 
-  renderTWA (innerWidth:number, innerHeight:number) {
-    if (this.state.twa === null) {
+  renderTWA (innerWidth:number, innerHeight:number, value?:number, heading?:number) {
+    if (value === null || isNaN(value as number)) {
+      return null
+    }
+
+    if (heading === null || isNaN(heading as number)) {
       return null
     }
     
-    const twa = this.state.twa || 0
-
+    const twa = value || 0
     return (
       <Group
-        rotation={(this.state.heading + twa)}
+        rotation={twa}
         offsetX={innerWidth / 2}
         offsetY={innerHeight / 2}
         x={innerWidth / 2}
@@ -219,16 +258,20 @@ class App extends React.Component {
     )
   }
 
-  renderAWA (innerWidth:number, innerHeight:number) {
-    if (this.state.awa === null) {
+  renderAWA (innerWidth:number, innerHeight:number, value?:number, heading?:number) {
+    if (value === null || isNaN(value as number)) {
       return null
     }
 
-    const awa = this.state.awa || 0
+    if (heading === null || isNaN(heading as number)) {
+      return null
+    }
+
+    const awa = value || 0
 
     return (
       <Group
-        rotation={(this.state.heading + awa)}
+        rotation={awa}
         offsetX={innerWidth / 2}
         offsetY={innerHeight / 2}
         x={innerWidth / 2}
@@ -257,16 +300,21 @@ class App extends React.Component {
     )
   }
 
-  renderCOG (innerWidth:number, innerHeight:number) {
-    if (this.state.cog === null) {
+  renderCOG (innerWidth:number, innerHeight:number, value?:number, heading?:number) {
+    if (value === null || isNaN(value as number)) {
       return null
     }
-    
-    const cog = this.state.cog || 0
-    
+
+    if (heading === null || isNaN(heading as number)) {
+      return null
+    }
+
+    const cog = value || 0
+    const calculated = -(heading as number) + cog
+
     return (
       <Group
-        rotation={-cog}
+        rotation={calculated}
         offsetX={innerWidth / 2}
         offsetY={innerHeight / 2}
         x={innerWidth / 2}
@@ -286,12 +334,16 @@ class App extends React.Component {
     )
   }
 
-  renderBTW (innerWidth:number, innerHeight:number) {
-    if (this.state.btw === null) {
+  renderBTW (innerWidth:number, innerHeight:number, value?:number, heading?:number) {
+    if (value === null || isNaN(value as number)) {
       return null
     }
-    
-    const btw = this.state.btw || 0
+
+    if (heading === null || isNaN(heading as number)) {
+      return null
+    }
+
+    const btw = value || 0
 
     return (
       <Group
@@ -318,40 +370,81 @@ class App extends React.Component {
       innerHeight,
       innerWidth
     } = window
+    
+    const { paths } = this.props
+    const cog = paths['navigation.courseOverGroundTrue']
+    const awa = paths['environment.wind.angleApparent']
+    const twa = paths['environment.wind.angleTrueWater']
+    const btw = null
 
-    const {
-      cog,
-      awa,
-      twa,
-      btw
-    } = this.state
+    let heading = null
+
+    if (typeof paths['navigation.headingMagnetic'] === 'number') {
+      heading = paths['navigation.headingMagnetic'] as number
+    } else if (typeof paths['navigation.headingTrue'] === 'number') {
+      heading = paths['navigation.headingTrue'] as number
+    } else if (typeof paths['navigation.courseOverGroundMagnetic'] === 'number') {
+      heading = paths['navigation.courseOverGroundMagnetic'] as number
+    } else {
+      heading = null
+    }
+
+    if (heading === null) {
+      return null
+    } else {
+      // convert to degrees
+      heading = this.radToDegrees(heading)
+    }
+
+    let depth = paths['environment.depth.belowTransducer'] as number
+
+    if (typeof depth !== 'number' || isNaN(depth)) {
+      depth = -9999
+    } else {
+      depth = depth - 1
+    }
+
+    // console.log(`Port tack angle = ${this.radToDegrees(awa as number) - 45}`)
+    // console.log(`Starboard tack angle = ${this.radToDegrees(awa as number) + 45}`)
 
     return (
       <section className='application'>
         <Stage width={innerWidth} height={innerHeight}>
           <Layer>
-            {this.renderCircles(innerWidth, innerHeight)}
-            {this.renderCenter()}
-            {twa !== null && this.renderTWA(innerWidth, innerHeight)}
-            {awa !== null && this.renderAWA(innerWidth, innerHeight)}
-            {cog !== null && this.renderCOG(innerWidth, innerHeight)}
-            {btw !== null && this.renderBTW(innerWidth, innerHeight)}
+            {this.renderCircles(innerWidth, innerHeight, (heading as number))}
+            {this.renderCenter(paths['navigation.speedOverGround'] as number)}
+            {this.renderTack('port', this.radToDegrees(awa as number), (heading as number), '#FF000080')}
+            {this.renderTack('starboard', this.radToDegrees(awa as number), (heading as number), '#00FF0080')}
+            {twa !== null && this.renderTWA(innerWidth, innerHeight, this.radToDegrees(twa as number), (heading as number))}
+            {awa !== null && this.renderAWA(innerWidth, innerHeight, this.radToDegrees(awa as number), (heading as number))}
+            {cog !== null && this.renderCOG(innerWidth, innerHeight, this.radToDegrees(cog as number), (heading as number))}
+            {btw !== null && this.renderBTW(innerWidth, innerHeight, this.radToDegrees(btw as number), (heading as number))}
           </Layer>
         </Stage>
         <div className='widgets-left'>
-          <Widget position='left' />
-          <Widget position='left' />
-          <Widget position='left' />
-          <Widget position='left' />
+          <Widget position='left' label='COG' value={paths['navigation.courseOverGroundTrue']} conversion='degrees' postfix='°' />
+          <Widget position='left' label='SOG' value={paths['navigation.speedOverGround']} conversion='knots' />
+          <Widget position='left' label='Speed' value={paths['navigation.speedThroughWater']} conversion='knots' />
+          <Widget position='left' label='VMG' value={paths['navigation.velocityMadeGood']} conversion='knots' />
         </div>
         <div className='widgets-right'>
-          <Widget position='right' />
-          <Widget position='right' />
-          <Widget position='right' />
-          <Widget position='right' />
+          <Widget position='right' label='Depth' value={depth} />
+          {/* <Widget position='right' label='WindR (app.)' value={this.radToDegrees(paths['environment.wind.angleApparent'] as number)} />
+          <Widget position='right' label='WindR (waar)' value={this.radToDegrees(paths['environment.wind.angleTrueWater'] as number)} /> */}
+          <Widget position='right' label='Windspd (A)' value={paths['environment.wind.speedApparent']} conversion='knots' />
+          <Widget position='right' label='Windspd (T)' value={paths['environment.wind.speedTrue']} conversion='knots' />
+          <Widget position='right' label='Current' value={paths['environment.current']} conversion='degrees' postfix='°' />
         </div>
       </section>
     )
+  }
+
+  msToKnots (ms:number):number {
+    return ms * 1.94384449
+  }
+
+  radToDegrees (rad:number):number {
+    return rad * 180 / Math.PI
   }
 
   compassDegrees (n:number, len:number = 3):string {
