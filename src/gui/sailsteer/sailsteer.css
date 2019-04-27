@@ -1,0 +1,27 @@
+section.sailsteer {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+  background: black;
+}
+
+section.sailsteer div.widgets-left,
+section.sailsteer div.widgets-right {
+  display: flex;
+  height: 100%;
+  width: 17%;
+  position: absolute;
+  top: 0;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+section.sailsteer div.widgets-left {
+  left: 0;
+}
+
+section.sailsteer div.widgets-right {
+  right: 0;
+}
