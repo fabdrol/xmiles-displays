@@ -7,8 +7,7 @@
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/register": "^7.4.0",
-    "@signalk/client": "https://github.com/SignalK/signalk-js-client.git#fabdrol-sdk",
-    "redux-devtools-extension": "^2.13.8",
+    "@signalk/client": "^2.0.0",
     "konva": "^3.2.4",
     "luxon": "^1.12.1",
     "object.pick": "^1.3.0",
@@ -18,6 +17,7 @@
     "react-redux": "^7.0.2",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "typescript": "^3.4.3"
   },
