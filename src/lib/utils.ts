@@ -31,3 +31,7 @@ export function flatten (tree:any, prefix:string = '') {
 
   return output
 }
+
+export function sleep (timeout:number, result:any = undefined):Promise<any> {
+  return new Promise(resolve => setTimeout(() => resolve(result), timeout))
+}

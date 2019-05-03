@@ -1,3 +1,6 @@
+export const SK_HOST = 'hq.decipher.digital'
+export const SK_PORT = 3000
+
 export default {
   'navigation.courseOverGroundTrue': {
     conversion: 'degrees',

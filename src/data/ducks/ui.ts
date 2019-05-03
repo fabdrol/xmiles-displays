@@ -1,4 +1,12 @@
 import { Reducer, Action, ActionCreator } from 'redux'
+import API from '../../lib/api'
+import { sleep } from '../../lib/utils'
+
+import {
+  call,
+  put
+} from 'redux-saga/effects'
+
 import {
   IUIDuckState,
   EWindTypes,
@@ -23,7 +31,8 @@ export enum ActionTypes {
   RESET = '@@ui/RESET',
   SET_WIND_TYPE = '@@ui/SET_WIND_TYPE',
   SET_DISPLAY = '@@ui/SET_DISPLAY',
-  SET_WIDGETS = '@@ui/SET_WIDGETS'
+  SET_WIDGETS = '@@ui/SET_WIDGETS',
+  REFRESH = '@@ui/REFRESH'
 }
 
 export const UIReducer: Reducer<IUIDuckState> = (state = initialState, action) => {
@@ -81,5 +90,31 @@ export const setWidgetsAction: ActionCreator<Action> = (payload:string[]) => {
   return {
     type: ActionTypes.SET_WIDGETS,
     payload
+  }
+}
+
+export const refresh: ActionCreator<Action> = (payload:string = 'port') => {
+  return {
+    type: ActionTypes.REFRESH,
+    payload
+  }
+}
+
+export const UISagas = {
+  refresh: function* refreshSaga (action:any) {
+    const payload:string = action.payload
+    
+    try {
+      const { data } = yield call(API.refresh, payload)
+      yield put(setDisplayAction(data.display || 'sailsteer'))
+      yield put(setWindTypeAction(data.windType || 'apparent'))
+      yield put(setWidgetsAction(data.widgets || []))
+    } catch (err) {
+      // @TODO schedule next refresh
+      console.log(`[UISagas/refresh] error: ${err.message}`)
+    }
+
+    yield sleep(5000)
+    yield put(refresh(payload))
   }
 }
