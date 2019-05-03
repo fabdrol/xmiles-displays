@@ -8,7 +8,11 @@ import { hydrateAction } from './data/ducks/signalk'
 
 import {
   SK_HOST,
-  SK_PORT
+  SK_PORT,
+  SK_USERNAME,
+  SK_PASSWORD,
+  SK_AUTH,
+  IDENTITY
 } from './config'
 
 import './index.css'
@@ -17,16 +21,16 @@ import App from './gui/app'
 const client = new Client({
   hostname: SK_HOST,
   port: SK_PORT,
+  useAuthentication: SK_AUTH,
+  username: SK_USERNAME,
+  password: SK_PASSWORD,
   useTLS: false,
-  useAuthentication: true,
   reconnect: true,
-  autoConnect: true,
-  username: 'sdk@decipher.industries',
-  password: 'signalk'
+  autoConnect: true
 })
 
 const store = configureStore(client)
-store.dispatch(refresh('starboard'))
+store.dispatch(refresh(IDENTITY))
 client.on('connect', () => store.dispatch((hydrateAction as any)()))
 
 const Root = (
