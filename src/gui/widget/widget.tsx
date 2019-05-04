@@ -11,6 +11,9 @@ export default class Widget extends React.Component<IWidgetPropTypes> {
       case 'knots': 
         return (val * 1.94384449).toFixed(1)
 
+      case 'temperature':
+        return (val - 272.15).toFixed(1)
+
       case 'degrees':
         return (val * 180 / Math.PI).toFixed(1)
 
