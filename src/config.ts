@@ -1,4 +1,5 @@
-export const SK_HOST = '192.168.0.100'
+// export const SK_HOST = '192.168.0.100'
+export const SK_HOST = 'hq.decipher.digital'
 export const SK_PORT = 3000
 export const SK_USERNAME = 'sdk@decipher.industries'
 export const SK_PASSWORD = 'signalk'
