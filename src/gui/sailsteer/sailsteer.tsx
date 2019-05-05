@@ -131,13 +131,12 @@ export default class SailSteer extends React.Component<ISailSteerPropTypes> {
     )
   }
 
-  renderCircles () {
+  renderCircles (heading:number) {
     const {
       width,
       height
     } = this.props
 
-    const heading:number = 0
     const outerOuterRadius:number = (height / 2) - 10
     const outerInnerRadius:number = outerOuterRadius - 20
     const innerOuterRadius:number = outerInnerRadius - 5
@@ -429,7 +428,7 @@ export default class SailSteer extends React.Component<ISailSteerPropTypes> {
       <section className='sailsteer'>
         <Stage width={width} height={height}>
           <Layer>
-            {this.renderCircles()}
+            {this.renderCircles(heading)}
             {this.renderCenter(paths['navigation.speedOverGround'] as number)}
             {this.renderTack('port', this.radToDegrees(awa as number), '#FF000080')}
             {this.renderTack('starboard', this.radToDegrees(awa as number), '#00FF0080')}
