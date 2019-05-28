@@ -4,7 +4,7 @@ export const SK_PORT = 3000
 export const SK_USERNAME = 'sdk@decipher.industries'
 export const SK_PASSWORD = 'signalk'
 export const SK_AUTH = false
-export const IDENTITY = 'port'
+export const IDENTITY = 'starboard'
 
 /*
   navigation.headingTrue
