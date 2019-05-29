@@ -23,6 +23,10 @@ export const SignalKReducer: Reducer<ISignalKDuckState> = (state = initialState,
     payload
   } = action
 
+  // if (type.startsWith('@@signalk')) {
+  //   console.log(type, payload)
+  // }
+
   switch (type) {
     case ActionTypes.RESET:
       return {
@@ -92,6 +96,14 @@ export function handleValueUpdate (timestamp:DateTime, payload:ISignalKDeltaValu
 }
 
 export function subscribe (dispatch: ThunkDispatch<IApplicationState, void, Action>, signalk:any, paths?:string[]):void {
+  try {
+    console.log(`[signalk/subscribe] unsubscribing`)
+    signalk.removeListener('delta')
+    signalk.unsubscribe()
+  } catch (err) {
+    console.log(`[signalk/subscribe] error unsubscribing`)
+  }
+  
   signalk.on('delta', (delta:ISignalKDelta) => {
     const { updates } = delta
 
@@ -109,6 +121,7 @@ export function subscribe (dispatch: ThunkDispatch<IApplicationState, void, Acti
     })
   })
 
+  console.log(`[signalk/subscribe] subscribing`)
   if (!Array.isArray(paths) || paths.length === 0) {
     signalk.subscribe()
   } else {

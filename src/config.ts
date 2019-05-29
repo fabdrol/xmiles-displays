@@ -1,11 +1,10 @@
-// export const SK_HOST = '192.168.196.13'
-export const SK_HOST = 'hq.decipher.digital'
+// export const SK_HOST = 'hq.decipher.digital'
+export const SK_HOST = '192.168.0.100'
 export const SK_PORT = 3000
 export const SK_USERNAME = 'sdk@decipher.industries'
 export const SK_PASSWORD = 'signalk'
 export const SK_AUTH = false
-export const IDENTITY = 'starboard'
-
+export const IDENTITY = 'port'
 /*
   navigation.headingTrue
   environment.depth.belowTransducer

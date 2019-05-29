@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import Client from '@signalk/client'
 import configureStore from './data/configure'
-import { refresh } from './data/ducks/ui'
+import { refresh, setConnected } from './data/ducks/ui'
 import { hydrateAction } from './data/ducks/signalk'
 
 import {
@@ -26,12 +26,23 @@ const client = new Client({
   password: SK_PASSWORD,
   useTLS: false,
   reconnect: true,
-  autoConnect: true
+  autoConnect: true,
+  notifications: false
 })
 
 const store = configureStore(client)
 store.dispatch(refresh(IDENTITY))
-client.on('connect', () => store.dispatch((hydrateAction as any)()))
+
+client.on('connect', () => {
+  console.log('client.connect')
+  store.dispatch(setConnected(true))
+  store.dispatch((hydrateAction as any)())
+})
+
+client.on('disconnect', () => {
+  console.log('client.disconnect')
+  store.dispatch(setConnected(false))
+})
 
 const Root = (
   <Provider store={store}>

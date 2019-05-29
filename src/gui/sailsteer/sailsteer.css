@@ -6,6 +6,23 @@ section.sailsteer {
   background: black;
 }
 
+section.sailsteer.centered {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+section.sailsteer h3.notification {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  font-size: 1.25em;
+  font-weight: normal;
+  color: orange;
+  opacity: 0.5;
+}
+
 section.sailsteer div.widgets-left,
 section.sailsteer div.widgets-right {
   display: flex;

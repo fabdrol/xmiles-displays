@@ -410,12 +410,14 @@ export default class SailSteer extends React.Component<ISailSteerPropTypes> {
     }
 
     if (heading === null) {
-      return null
-    } else {
-      // convert to degrees
-      heading = this.radToDegrees(heading)
+      return (
+        <section className='sailsteer centered'>
+          <h3 className='notification'>Connecting...</h3>
+        </section>
+      )
     }
 
+    heading = this.radToDegrees(heading)
     let depth = paths['environment.depth.belowTransducer'] as number
 
     if (typeof depth !== 'number' || isNaN(depth)) {

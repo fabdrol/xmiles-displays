@@ -11,8 +11,17 @@ export default class App extends React.Component<IAppPropTypes> {
     const { innerHeight, innerWidth } = window
     const {
       display,
-      type
+      type,
+      connected
     } = this.props
+
+    if (connected === false) {
+      return (
+        <section className='sailsteer centered'>
+          <h3 className='notification'>Connecting...</h3>
+        </section>
+      )
+    }
 
     switch (display) {
       case EDisplayTypes.WIND:

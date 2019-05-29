@@ -24,6 +24,7 @@ export interface IApplicationState {
 }
 
 export interface IAppPropTypes {
+  connected: boolean,
   display: EDisplayTypes,
   type: EWindTypes,
   widgets: string[]
@@ -61,6 +62,7 @@ export interface IGridPropTypes {
 }
 
 export interface IUIDuckState {
+  connected: boolean,
   display: EDisplayTypes,
   windType: EWindTypes,
   widgets: string[]

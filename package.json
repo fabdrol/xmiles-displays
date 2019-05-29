@@ -7,7 +7,7 @@
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/register": "^7.4.0",
-    "@signalk/client": "^2.0.0",
+    "@signalk/client": "SignalK/signalk-js-client#bugfix-subscription-reconnect",
     "axios": "^0.18.0",
     "konva": "^3.2.4",
     "luxon": "^1.12.1",

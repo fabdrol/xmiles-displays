@@ -14,6 +14,7 @@ import {
 } from '../../types'
 
 export const initialState:IUIDuckState = {
+  connected: false,
   display: EDisplayTypes.SAILSTEER,
   windType: EWindTypes.TRUE,
   widgets: [
@@ -32,7 +33,8 @@ export enum ActionTypes {
   SET_WIND_TYPE = '@@ui/SET_WIND_TYPE',
   SET_DISPLAY = '@@ui/SET_DISPLAY',
   SET_WIDGETS = '@@ui/SET_WIDGETS',
-  REFRESH = '@@ui/REFRESH'
+  REFRESH = '@@ui/REFRESH',
+  SET_CONNECTED = '@@ui/SET_CONNECTED'
 }
 
 export const UIReducer: Reducer<IUIDuckState> = (state = initialState, action) => {
@@ -63,6 +65,12 @@ export const UIReducer: Reducer<IUIDuckState> = (state = initialState, action) =
       return {
         ...state,
         windType: payload === 'true' ? EWindTypes.TRUE : EWindTypes.APPARENT
+      }
+    
+    case ActionTypes.SET_CONNECTED:
+      return {
+        ...state,
+        connected: payload
       }
 
     default:
@@ -100,8 +108,15 @@ export const refresh: ActionCreator<Action> = (payload:string = 'port') => {
   }
 }
 
+export const setConnected: ActionCreator<Action> = (payload:boolean = true) => {
+  return {
+    type: ActionTypes.SET_CONNECTED,
+    payload
+  }
+}
+
 export const UISagas = {
-  refresh: function* refreshSaga (action:any) {
+  refresh: function* refreshSaga (action:any):any {
     const payload:string = action.payload
     
     try {
@@ -110,7 +125,6 @@ export const UISagas = {
       yield put(setWindTypeAction(data.windType || 'apparent'))
       yield put(setWidgetsAction(data.widgets || []))
     } catch (err) {
-      // @TODO schedule next refresh
       console.log(`[UISagas/refresh] error: ${err.message}`)
     }
 

@@ -8,7 +8,8 @@ const mapStateToProps = ({ ui }: IApplicationState, ownProps: any) => {
     ...ownProps,
     display: ui.display,
     type: ui.windType,
-    widgets: ui.widgets
+    widgets: ui.widgets,
+    connected: ui.connected
   }
 }
 
