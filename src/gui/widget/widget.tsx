@@ -8,6 +8,9 @@ export default class Widget extends React.Component<IWidgetPropTypes> {
     const val = value as number
 
     switch (conversion) {
+      case 'percentage':
+        return (val * 100).toFixed(1)
+        
       case 'knots': 
         return (val * 1.94384449).toFixed(1)
 

@@ -23,6 +23,12 @@ export const IDENTITY = 'port'
   environment.wind.speedOverGround
 */
 export default {
+  'tanks.fuel.0.currentLevel': {
+    conversion: 'percentage',
+    label: 'Tank %',
+    postfix: ''
+  },
+
   'navigation.headingTrue': {
     conversion: 'degrees',
     label: 'Heading (T)',
