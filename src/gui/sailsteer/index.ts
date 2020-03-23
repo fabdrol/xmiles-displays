@@ -8,12 +8,14 @@ const mapStateToProps = ({ signalk }: IApplicationState, ownProps: any) => {
   const { data } = signalk
   const paths = pick(data, [
     'name',
-    'navigation.speedThroughWater',
     'navigation.courseOverGroundMagnetic',
-    'navigation.headingMagnetic',
     'navigation.courseOverGroundTrue',
+    'navigation.headingMagnetic',
+    'navigation.headingTrue',
+    'navigation.speedThroughWater',
     'navigation.speedOverGround',
     'navigation.position',
+    
     'performance.velocityMadeGood',
     'environment.wind.speedApparent',
     'environment.wind.angleApparent',

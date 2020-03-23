@@ -4,6 +4,8 @@ import { ISailSteerPropTypes } from '../../types'
 import './sailsteer.css'
 import Widget from '../widget'
 
+let logged = 0
+
 export default class SailSteer extends React.Component<ISailSteerPropTypes> {
   renderTack (side:string, awa:number, colour:string = 'green') {
     if (isNaN(awa as number)) {
@@ -392,6 +394,12 @@ export default class SailSteer extends React.Component<ISailSteerPropTypes> {
     } = this.props
     
     const { paths } = this.props
+
+    if (Object.keys(paths).length > 0 && logged < 10) {
+      console.log('paths', logged, paths)
+      logged += 1
+    }
+
     const cog = paths['navigation.courseOverGroundTrue']
     const awa = paths['environment.wind.angleApparent']
     const twa = paths['environment.wind.angleTrueWater']
@@ -431,7 +439,7 @@ export default class SailSteer extends React.Component<ISailSteerPropTypes> {
         <Stage width={width} height={height}>
           <Layer>
             {this.renderCircles(heading)}
-            {this.renderCenter(paths['navigation.speedOverGround'] as number)}
+            {this.renderCenter(paths['navigation.speedThroughWater'] as number)}
             {this.renderTack('port', this.radToDegrees(awa as number), '#FF000080')}
             {this.renderTack('starboard', this.radToDegrees(awa as number), '#00FF0080')}
             {twa !== null && this.renderTWA(this.radToDegrees(twa as number))}
@@ -445,7 +453,7 @@ export default class SailSteer extends React.Component<ISailSteerPropTypes> {
           <Widget position='left' label='COG' value={paths['navigation.courseOverGroundTrue']} conversion='degrees' postfix='°' />
           <Widget position='left' label='SOG' value={paths['navigation.speedOverGround']} conversion='knots' />
           <Widget position='left' label='Speed' value={paths['navigation.speedThroughWater']} conversion='knots' />
-          <Widget position='left' label='VMG' value={paths['navigation.velocityMadeGood']} conversion='knots' />
+          <Widget position='left' label='VMG' value={paths['performance.velocityMadeGood']} conversion='knots' />
         </div>)}
 
         {widgets === true && (<div className='widgets-right'>
