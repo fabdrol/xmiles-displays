@@ -1,4 +1,4 @@
-export const SK_HOST = 'hq.decipher.digital'
+export const SK_HOST = 'signalk.decipher.digital'
 export const SK_PORT = 443
 // export const SK_HOST = '192.168.0.100'
 // export const SK_PORT = 3000

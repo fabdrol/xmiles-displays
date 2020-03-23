@@ -6,7 +6,9 @@ import {
 
 const API = {
   async refresh (display:string) {
-    return await axios.get(`http://${SK_HOST}:${SK_PORT}/_essense-instrument/api/v1/state/${display}`)
+    const schema = SK_PORT === 443 ? 'https' : 'http'
+    const url = `${schema}://${SK_HOST}:${SK_PORT}/_essense-instrument/api/v1/state/${display}`
+    return await axios.get(url)
   }
 }
 
