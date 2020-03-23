@@ -24,7 +24,7 @@ const client = new Client({
   useAuthentication: SK_AUTH,
   username: SK_USERNAME,
   password: SK_PASSWORD,
-  useTLS: false,
+  useTLS: (SK_PORT === 443),
   reconnect: true,
   autoConnect: true,
   notifications: false
