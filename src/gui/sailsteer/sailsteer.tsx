@@ -412,7 +412,7 @@ export default class SailSteer extends React.Component<ISailSteerPropTypes> {
     if (heading === null) {
       return (
         <section className='sailsteer centered'>
-          <h3 className='notification'>Connecting...</h3>
+          <h3 className='notification'>No heading...</h3>
         </section>
       )
     }
