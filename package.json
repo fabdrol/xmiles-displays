@@ -1,7 +1,6 @@
 {
   "name": "xmiles-displays",
-  "version": "1.0.3",
-  "private": true,
+  "version": "1.0.8",
   "dependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
@@ -25,10 +24,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build": "react-scripts build"
   },
+  "license": "Apache_2.0",
   "eslintConfig": {
     "extends": "react-app"
   },
