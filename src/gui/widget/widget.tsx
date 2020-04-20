@@ -120,9 +120,9 @@ export default class Widget extends React.Component<IWidgetPropTypes> {
     }
   
     if (lng === true) {
-      dir = deg < 0 ? 'W' : 'S'
+      dir = deg < 0 ? 'W' : 'E'
     } else {
-      dir = deg < 0 ? 'E' : 'N'
+      dir = deg < 0 ? 'S' : 'N'
     }
   
     return `${z(d)}° ${z(m)}' ${z(parseFloat(secfloat.toFixed(1)), 1)}" ${dir}`
