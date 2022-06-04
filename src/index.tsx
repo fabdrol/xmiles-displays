@@ -28,8 +28,22 @@ const client = new Client({
   notifications: false
 })
 
+let ident = IDENTITY
+
+const search = window.location.search
 const store = configureStore(client)
-store.dispatch(refresh(IDENTITY))
+
+if (search && typeof search === 'string' && search.startsWith('?identity=')) {
+  ident = search.replace('?identity=', '').trim()
+  ident = ident === '' ? IDENTITY : ident
+}
+
+if (ident !== 'port' && ident !== 'starboard') {
+  ident = IDENTITY
+}
+
+console.log(`identity: ${ident}`)
+store.dispatch(refresh(ident))
 
 client.on('connect', () => {
   console.log('client.connect')
