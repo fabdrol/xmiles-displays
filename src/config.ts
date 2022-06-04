@@ -1,4 +1,4 @@
-export const SK_HOST: string = '192.168.194.90'
+export const SK_HOST: string = '192.168.0.100'
 export const SK_PORT: number = 3000
 export const SK_USERNAME: string = 'xmiles'
 export const SK_PASSWORD: string = 'xmiles2020'
