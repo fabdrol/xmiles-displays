@@ -1,4 +1,4 @@
-import { Reducer, Action, ActionCreator } from 'redux'
+import { Reducer, Action } from 'redux'
 import { ThunkDispatch } from 'redux-thunk'
 import { DateTime } from 'luxon'
 import { IApplicationState, ISignalKDuckState, ISignalKDelta, ISignalKDeltaUpdate, ISignalKDeltaValue } from '../../types'
@@ -22,10 +22,6 @@ export const SignalKReducer: Reducer<ISignalKDuckState> = (state = initialState,
     type,
     payload
   } = action
-
-  // if (type.startsWith('@@signalk')) {
-  //   console.log(type, payload)
-  // }
 
   switch (type) {
     case ActionTypes.RESET:
@@ -71,7 +67,7 @@ export function hydrateAction () {
         type: ActionTypes.HYDRATE,
         payload
       })
-    } catch (err) {
+    } catch (err: any) {
       console.log(`[signalk/hydrateAction] error: ${err.message}`)
     }
   }
@@ -100,11 +96,12 @@ export function subscribe (dispatch: ThunkDispatch<IApplicationState, void, Acti
     console.log(`[signalk/subscribe] unsubscribing`)
     signalk.removeListener('delta')
     signalk.unsubscribe()
-  } catch (err) {
+  } catch (err: any) {
     console.log(`[signalk/subscribe] error unsubscribing`)
   }
   
   signalk.on('delta', (delta:ISignalKDelta) => {
+    // console.log('[delta]', delta)
     const { updates } = delta
 
     updates.forEach((update:ISignalKDeltaUpdate) => {
@@ -121,9 +118,13 @@ export function subscribe (dispatch: ThunkDispatch<IApplicationState, void, Acti
     })
   })
 
-  console.log(`[signalk/subscribe] subscribing`)
+  console.log(`[signalk/subscribe] subscribing`, paths)
+ 
   if (!Array.isArray(paths) || paths.length === 0) {
-    signalk.subscribe()
+    signalk.subscribe({
+      context: 'vessels.self',
+      subscribe: [{ path: '*' }]
+    })
   } else {
     signalk.subscribe({
       context: 'vessels.self',

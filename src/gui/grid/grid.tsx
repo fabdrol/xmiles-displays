@@ -17,6 +17,10 @@ export default class Wind extends React.Component<IGridPropTypes> {
       const value = paths[path]
       const config = configs[path]
 
+      if (typeof config !== 'object' || !config) {
+        return null
+      }
+
       return (
         <Widget
           key={path}

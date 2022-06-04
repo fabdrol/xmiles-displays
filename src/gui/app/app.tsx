@@ -5,8 +5,9 @@ import './app.css'
 import SailSteer from '../sailsteer'
 import Wind from '../wind'
 import Grid from '../grid'
+import Freeboard from '../freeboard'
 
-export default class App extends React.Component<IAppPropTypes> {
+class App extends React.Component<IAppPropTypes> {
   render () {
     const { innerHeight, innerWidth } = window
     const {
@@ -47,6 +48,12 @@ export default class App extends React.Component<IAppPropTypes> {
           height={innerHeight}
         />
 
+      case EDisplayTypes.FREEBOARD:
+        return <Freeboard
+          width={innerWidth}
+          height={innerHeight}
+        />
+
       default:
         return (
           <p style={{ textAlign: 'center' }}>
@@ -56,3 +63,5 @@ export default class App extends React.Component<IAppPropTypes> {
     }
   }
 }
+
+export default App

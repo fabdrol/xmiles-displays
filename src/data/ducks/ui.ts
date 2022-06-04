@@ -124,7 +124,7 @@ export const UISagas = {
       yield put(setDisplayAction(data.display || 'sailsteer'))
       yield put(setWindTypeAction(data.windType || 'apparent'))
       yield put(setWidgetsAction(data.widgets || []))
-    } catch (err) {
+    } catch (err:any) {
       console.log(`[UISagas/refresh] error: ${err.message}`)
     }
 

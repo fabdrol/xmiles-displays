@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import Client from '@signalk/client'
 import configureStore from './data/configure'
@@ -21,9 +21,7 @@ import App from './gui/app'
 const client = new Client({
   hostname: SK_HOST,
   port: SK_PORT,
-  useAuthentication: SK_AUTH,
-  username: SK_USERNAME,
-  password: SK_PASSWORD,
+  useAuthentication: false,
   useTLS: (SK_PORT === 443),
   reconnect: true,
   autoConnect: true,
@@ -35,8 +33,13 @@ store.dispatch(refresh(IDENTITY))
 
 client.on('connect', () => {
   console.log('client.connect')
-  store.dispatch(setConnected(true))
-  store.dispatch((hydrateAction as any)())
+  
+  client.authenticate(SK_USERNAME, SK_PASSWORD)
+  client.once('authenticated', (data: any) => {
+    console.log('client.authenticate', data)
+    store.dispatch(setConnected(true))
+    store.dispatch((hydrateAction as any)())
+  })
 })
 
 client.on('disconnect', () => {
@@ -50,7 +53,6 @@ const Root = (
   </Provider>
 )
 
-ReactDOM.render(
-  Root,
-  document.getElementById('root') as HTMLElement
-)
+const container = document.getElementById('root')
+const root = createRoot(container!)
+root.render(Root)

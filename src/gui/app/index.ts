@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
-import { IApplicationState, EWindTypes } from '../../types'
+import { IApplicationState } from '../../types'
 import App from './app'
 
 const mapStateToProps = ({ ui }: IApplicationState, ownProps: any) => {

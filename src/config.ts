@@ -1,11 +1,10 @@
-export const SK_HOST = 'signalk.decipher.digital'
-export const SK_PORT = 443
-// export const SK_HOST = '192.168.0.100'
-// export const SK_PORT = 3000
-export const SK_USERNAME = 'xmiles@decipher.industries'
-export const SK_PASSWORD = 'xmiles2020'
-export const SK_AUTH = true
-export const IDENTITY = 'starboard'
+export const SK_HOST: string = '192.168.194.90'
+export const SK_PORT: number = 3000
+export const SK_USERNAME: string = 'xmiles'
+export const SK_PASSWORD: string = 'xmiles2020'
+export const SK_AUTH: boolean = true
+export const IDENTITY: string = 'starboard'
+
 /*
   navigation.headingTrue
   environment.depth.belowTransducer
@@ -23,6 +22,7 @@ export const IDENTITY = 'starboard'
   environment.wind.angleTrueWater
   environment.wind.speedOverGround
 */
+
 export default {
   'tanks.fuel.0.currentLevel': {
     conversion: 'percentage',

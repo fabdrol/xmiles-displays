@@ -9,7 +9,8 @@ export enum EDisplayTypes {
   GRID1 = 'grid_1',
   GRID2 = 'grid_2',
   GRID4 = 'grid_4',
-  GRID6 = 'grid_6'
+  GRID6 = 'grid_6',
+  FREEBOARD = 'freeboard',
 }
 
 export interface IWidgetConfig {
